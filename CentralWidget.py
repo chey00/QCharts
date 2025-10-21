@@ -58,6 +58,17 @@ class CentralWidget(QWidget):
         self.__radio_button_dough_gluten_free = QRadioButton("Glutenfreier Teig", self)
         self.__radio_button_dough_pinza = QRadioButton("Pinza", self)
 
+        self.__dict_doughs = dict()
+        self.__dict_doughs[self.__radio_button_dough_normal] = 5.50
+        self.__dict_doughs[self.__radio_button_dough_sour_dough] = 7.30
+        self.__dict_doughs[self.__radio_button_dough_gluten_free] = 8.75
+        self.__dict_doughs[self.__radio_button_dough_pinza] = 10.20
+
+        self.__price_doughs = 0.00
+
+        for key in self.__dict_doughs.keys():
+            key.clicked.connect(self.__slot_doughs)
+
         v_box_layout_doughs = QVBoxLayout()
         v_box_layout_doughs.addWidget(self.__radio_button_dough_normal)
         v_box_layout_doughs.addWidget(self.__radio_button_dough_sour_dough)
@@ -82,7 +93,7 @@ class CentralWidget(QWidget):
         group_box_cheese.setLayout(v_box_layout_cheese)
 
         self.__radio_button_delivery_quick = QRadioButton("Schnelllieferung", self)
-        self.__radio_button_delivery_normal = QRadioButton("Noramle Lieferung", self)
+        self.__radio_button_delivery_normal = QRadioButton("Normale Lieferung", self)
         self.__radio_button_delivery_self_pickup = QRadioButton("Selbstabholung", self)
 
         v_box_layout_delivery = QVBoxLayout()
@@ -133,4 +144,10 @@ class CentralWidget(QWidget):
         else:
             self.__price_ingredients -= self.__dict_ingredients[self.sender()]
 
-        print(self.__price_ingredients)
+        print("Zutaten: " + str(self.__price_ingredients))
+
+    @pyqtSlot()
+    def __slot_doughs(self):
+        self.__price_doughs = self.__dict_doughs[self.sender()]
+
+        print("Teig: " + str(self.__price_doughs))
