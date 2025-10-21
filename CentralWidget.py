@@ -1,4 +1,6 @@
-from PyQt6.QtWidgets import QWidget, QCheckBox, QGroupBox, QVBoxLayout, QGridLayout, QRadioButton, QLabel, QPushButton
+from PyQt6.QtCore import pyqtSlot
+from PyQt6.QtWidgets import QWidget, QCheckBox, QGroupBox, QVBoxLayout, QGridLayout, QRadioButton, QLabel, QPushButton, \
+    QHBoxLayout
 
 
 class CentralWidget(QWidget):
@@ -16,6 +18,24 @@ class CentralWidget(QWidget):
         self.__check_box_ingredient_salami = QCheckBox("Salami", self)
         self.__check_box_ingredient_peperoni = QCheckBox("Scharfe Salami", self)
         self.__check_box_ingredient_suzuek = QCheckBox("Suzük", self)
+
+        self.__dict_ingredients = dict()
+        self.__dict_ingredients[self.__check_box_ingredient_mushroom] = 0.50
+        self.__dict_ingredients[self.__check_box_ingredient_corn] = 0.30
+        self.__dict_ingredients[self.__check_box_ingredient_pepper] = 0.75
+        self.__dict_ingredients[self.__check_box_ingredient_onion] = 0.20
+        self.__dict_ingredients[self.__check_box_ingredient_egg] = 1.00
+        self.__dict_ingredients[self.__check_box_ingredient_pineapple] = 0.80
+        self.__dict_ingredients[self.__check_box_ingredient_ham] = 0.90
+        self.__dict_ingredients[self.__check_box_ingredient_parma] = 1.50
+        self.__dict_ingredients[self.__check_box_ingredient_salami] = 0.60
+        self.__dict_ingredients[self.__check_box_ingredient_peperoni] = 0.60
+        self.__dict_ingredients[self.__check_box_ingredient_suzuek] = 0.40
+
+        self.__price_ingredients = 0.00
+
+        for key in self.__dict_ingredients.keys():
+            key.clicked.connect(self.__slot_ingredients)
 
         v_box_layout_ingredients = QVBoxLayout()
         v_box_layout_ingredients.addWidget(self.__check_box_ingredient_mushroom)
@@ -91,11 +111,26 @@ class CentralWidget(QWidget):
         group_box_finalize = QGroupBox("Übersicht", self)
         group_box_finalize.setLayout(v_box_layout_finalize)
 
-        grid_layout = QGridLayout()
-        grid_layout.addWidget(group_box_ingredients, 0, 0, 2, 1)
-        grid_layout.addWidget(group_box_doughs, 0, 1)
-        grid_layout.addWidget(group_box_cheese, 1, 1)
-        grid_layout.addWidget(group_box_delivery, 0, 2)
-        grid_layout.addWidget(group_box_finalize, 1, 2)
+        v_box_layout_doughs_and_cheese = QVBoxLayout()
+        v_box_layout_doughs_and_cheese.addWidget(group_box_doughs)
+        v_box_layout_doughs_and_cheese.addWidget(group_box_cheese)
 
-        self.setLayout(grid_layout)
+        v_box_layout_delivery_and_finalize = QVBoxLayout()
+        v_box_layout_delivery_and_finalize.addWidget(group_box_delivery)
+        v_box_layout_delivery_and_finalize.addWidget(group_box_finalize)
+
+        h_box_layout = QHBoxLayout()
+        h_box_layout.addWidget(group_box_ingredients)
+        h_box_layout.addLayout(v_box_layout_doughs_and_cheese)
+        h_box_layout.addLayout(v_box_layout_delivery_and_finalize)
+
+        self.setLayout(h_box_layout)
+
+    @pyqtSlot()
+    def __slot_ingredients(self):
+        if self.sender().isChecked():
+            self.__price_ingredients += self.__dict_ingredients[self.sender()]
+        else:
+            self.__price_ingredients -= self.__dict_ingredients[self.sender()]
+
+        print(self.__price_ingredients)
