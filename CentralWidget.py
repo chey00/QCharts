@@ -83,6 +83,17 @@ class CentralWidget(QWidget):
         self.__radio_button_cheese_lactose_free = QRadioButton("Laktosefreier Käse", self)
         self.__radio_button_cheese_without = QRadioButton("Ohne Käse", self)
 
+        self.__dict_cheeses = dict()
+        self.__dict_cheeses[self.__radio_button_cheese_mozzarella] = 0.50
+        self.__dict_cheeses[self.__radio_button_cheese_burrata] = 1.30
+        self.__dict_cheeses[self.__radio_button_cheese_lactose_free] = 1.00
+        self.__dict_cheeses[self.__radio_button_cheese_without] = 0.0
+
+        self.__price_cheeses = 0.00
+
+        for key in self.__dict_cheeses.keys():
+            key.clicked.connect(self.__slot_cheeses)
+
         v_box_layout_cheese = QVBoxLayout()
         v_box_layout_cheese.addWidget(self.__radio_button_cheese_mozzarella)
         v_box_layout_cheese.addWidget(self.__radio_button_cheese_burrata)
@@ -95,6 +106,16 @@ class CentralWidget(QWidget):
         self.__radio_button_delivery_quick = QRadioButton("Schnelllieferung", self)
         self.__radio_button_delivery_normal = QRadioButton("Normale Lieferung", self)
         self.__radio_button_delivery_self_pickup = QRadioButton("Selbstabholung", self)
+
+        self.__dict_delivery = dict()
+        self.__dict_delivery[self.__radio_button_delivery_quick] = 3.50
+        self.__dict_delivery[self.__radio_button_delivery_normal] = 1.50
+        self.__dict_delivery[self.__radio_button_delivery_self_pickup] = 0.00
+
+        self.__price_delivery = 0.00
+
+        for key in self.__dict_delivery.keys():
+            key.clicked.connect(self.__slot_delivery)
 
         v_box_layout_delivery = QVBoxLayout()
         v_box_layout_delivery.addWidget(self.__radio_button_delivery_quick)
@@ -150,4 +171,16 @@ class CentralWidget(QWidget):
     def __slot_doughs(self):
         self.__price_doughs = self.__dict_doughs[self.sender()]
 
-        print("Teig: " + str(self.__price_doughs))
+        print("Teig: " + str(self.__price_doughs))#
+
+    @pyqtSlot()
+    def __slot_cheeses(self):
+        self.__price_cheeses = self.__dict_cheeses[self.sender()]
+
+        print("Käse: " + str(self.__price_cheeses))
+
+    @pyqtSlot()
+    def __slot_delivery(self):
+        self.__price_delivery = self.__dict_delivery[self.sender()]
+
+        print("Lieferung: " + str(self.__price_delivery))
