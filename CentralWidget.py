@@ -165,22 +165,34 @@ class CentralWidget(QWidget):
         else:
             self.__price_ingredients -= self.__dict_ingredients[self.sender()]
 
-        print("Zutaten: " + str(self.__price_ingredients))
+        self.__label_price_ingredients.setText("Zutaten: \t"+ f"{self.__price_ingredients:0.2f}" +" €")
+        self.calculate_sum()
 
     @pyqtSlot()
     def __slot_doughs(self):
         self.__price_doughs = self.__dict_doughs[self.sender()]
 
-        print("Teig: " + str(self.__price_doughs))#
+        self.__label_price_dough.setText("Teig: \t\t"+ f"{self.__price_doughs:0.2f}" +" €")
+        self.calculate_sum()
 
     @pyqtSlot()
     def __slot_cheeses(self):
         self.__price_cheeses = self.__dict_cheeses[self.sender()]
 
-        print("Käse: " + str(self.__price_cheeses))
+        self.__label_price_cheese.setText("Käse: \t\t"+ f"{self.__price_cheeses:0.2f}" +" €")
+        self.calculate_sum()
 
     @pyqtSlot()
     def __slot_delivery(self):
         self.__price_delivery = self.__dict_delivery[self.sender()]
 
-        print("Lieferung: " + str(self.__price_delivery))
+        self.__label_price_delivery.setText("Lieferung: \t"+ f"{self.__price_delivery:0.2f}" +" €")
+        self.calculate_sum()
+
+    def calculate_sum(self):
+        sum = self.__price_delivery
+        sum += self.__price_cheeses
+        sum += self.__price_doughs
+        sum += self.__price_ingredients
+
+        self.__label_price_sum.setText("Gesamtpreis: \t"+ f"{sum:0.2f}" +" €")
