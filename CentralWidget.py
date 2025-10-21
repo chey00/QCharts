@@ -1,5 +1,5 @@
 from PyQt6.QtCore import pyqtSlot
-from PyQt6.QtWidgets import QWidget, QCheckBox, QGroupBox, QVBoxLayout, QGridLayout, QRadioButton, QLabel, QPushButton, \
+from PyQt6.QtWidgets import QWidget, QCheckBox, QGroupBox, QVBoxLayout, QRadioButton, QLabel, QPushButton, \
     QHBoxLayout
 
 
