@@ -20,7 +20,7 @@ class CentralWidget(QWidget):
         self.__check_box_ingredient_suzuek = QCheckBox("Suzük", self)
 
         self.__dict_ingredients = dict()
-        self.__dict_ingredients[self.__check_box_ingredient_mushroom] = 0.50
+        self.__dict_ingredients[self.__check_box_ingredient_mushroom] = 0.60
         self.__dict_ingredients[self.__check_box_ingredient_corn] = 0.30
         self.__dict_ingredients[self.__check_box_ingredient_pepper] = 0.75
         self.__dict_ingredients[self.__check_box_ingredient_onion] = 0.20
@@ -36,6 +36,11 @@ class CentralWidget(QWidget):
 
         for key in self.__dict_ingredients.keys():
             key.clicked.connect(self.__slot_ingredients)
+
+            text = key.text()
+            text += " ({:0.2f} €)".format(self.__dict_ingredients[key])
+
+            key.setText(text)
 
         v_box_layout_ingredients = QVBoxLayout()
         v_box_layout_ingredients.addWidget(self.__check_box_ingredient_mushroom)
@@ -69,6 +74,11 @@ class CentralWidget(QWidget):
         for key in self.__dict_doughs.keys():
             key.clicked.connect(self.__slot_doughs)
 
+            text = key.text()
+            text += " ({:0.2f} €)".format(self.__dict_doughs[key])
+
+            key.setText(text)
+
         v_box_layout_doughs = QVBoxLayout()
         v_box_layout_doughs.addWidget(self.__radio_button_dough_normal)
         v_box_layout_doughs.addWidget(self.__radio_button_dough_sour_dough)
@@ -94,6 +104,11 @@ class CentralWidget(QWidget):
         for key in self.__dict_cheeses.keys():
             key.clicked.connect(self.__slot_cheeses)
 
+            text = key.text()
+            text += " ({:0.2f} €)".format(self.__dict_cheeses[key])
+
+            key.setText(text)
+
         v_box_layout_cheese = QVBoxLayout()
         v_box_layout_cheese.addWidget(self.__radio_button_cheese_mozzarella)
         v_box_layout_cheese.addWidget(self.__radio_button_cheese_burrata)
@@ -116,6 +131,11 @@ class CentralWidget(QWidget):
 
         for key in self.__dict_delivery.keys():
             key.clicked.connect(self.__slot_delivery)
+
+            text = key.text()
+            text += " ({:0.2f} €)".format(self.__dict_delivery[key])
+
+            key.setText(text)
 
         v_box_layout_delivery = QVBoxLayout()
         v_box_layout_delivery.addWidget(self.__radio_button_delivery_quick)
