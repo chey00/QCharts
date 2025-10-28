@@ -11,4 +11,4 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(central_widget)
 
-        self.setWindowTitle("Pizza Konfigurator 2000")
+        self.setWindowTitle("Einführung in QCharts")
