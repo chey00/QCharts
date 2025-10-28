@@ -1,6 +1,6 @@
 from PyQt6.QtCore import pyqtSlot
 from PyQt6.QtWidgets import QWidget, QCheckBox, QGroupBox, QVBoxLayout, QRadioButton, QLabel, QPushButton, \
-    QHBoxLayout
+    QHBoxLayout, QComboBox, QLineEdit
 
 
 class CentralWidget(QWidget):
@@ -149,16 +149,16 @@ class CentralWidget(QWidget):
         self.__label_price_ingredients = QLabel("Zutaten: \t0,00 €", self)
         self.__label_price_cheese = QLabel("Käse: \t\t0,00 €", self)
         self.__label_price_delivery = QLabel("Lieferkosten: \t0,00 €", self)
+        self.__label_price_tip = QLabel("Trinkgeld: \t0,00 €", self)
         self.__label_price_sum = QLabel("Gesamtpreis: \t0,00 €", self)
-        self.__push_button = QPushButton("Jetzt bestellen", self)
 
         v_box_layout_finalize = QVBoxLayout()
         v_box_layout_finalize.addWidget(self.__label_price_dough)
         v_box_layout_finalize.addWidget(self.__label_price_ingredients)
         v_box_layout_finalize.addWidget(self.__label_price_cheese)
         v_box_layout_finalize.addWidget(self.__label_price_delivery)
+        v_box_layout_finalize.addWidget(self.__label_price_tip)
         v_box_layout_finalize.addWidget(self.__label_price_sum)
-        v_box_layout_finalize.addWidget(self.__push_button)
 
         group_box_finalize = QGroupBox("Übersicht", self)
         group_box_finalize.setLayout(v_box_layout_finalize)
@@ -171,12 +171,32 @@ class CentralWidget(QWidget):
         v_box_layout_delivery_and_finalize.addWidget(group_box_delivery)
         v_box_layout_delivery_and_finalize.addWidget(group_box_finalize)
 
-        h_box_layout = QHBoxLayout()
-        h_box_layout.addWidget(group_box_ingredients)
-        h_box_layout.addLayout(v_box_layout_doughs_and_cheese)
-        h_box_layout.addLayout(v_box_layout_delivery_and_finalize)
+        h_box_layout_options = QHBoxLayout()
+        h_box_layout_options.addWidget(group_box_ingredients)
+        h_box_layout_options.addLayout(v_box_layout_doughs_and_cheese)
+        h_box_layout_options.addLayout(v_box_layout_delivery_and_finalize)
 
-        self.setLayout(h_box_layout)
+        self.__combo_box_tip = QComboBox(self)
+        self.__combo_box_tip.addItem("ohne")
+        self.__combo_box_tip.addItem("Betrag")
+        self.__combo_box_tip.addItem("Prozent")
+        self.__combo_box_tip.currentTextChanged.connect(self.__slot_tip)
+
+        self.__line_edit_tip = QLineEdit(self)
+
+        self.__push_button = QPushButton("Jetzt bestellen", self)
+
+        h_box_layout_tip = QHBoxLayout()
+        h_box_layout_tip.addWidget(QLabel("Trinkgeld"))
+        h_box_layout_tip.addWidget(self.__combo_box_tip)
+        h_box_layout_tip.addWidget(self.__line_edit_tip)
+        h_box_layout_tip.addWidget(self.__push_button)
+
+        v_box_layout = QVBoxLayout()
+        v_box_layout.addLayout(h_box_layout_options)
+        v_box_layout.addLayout(h_box_layout_tip)
+
+        self.setLayout(v_box_layout)
 
     @pyqtSlot()
     def __slot_ingredients(self):
@@ -216,3 +236,16 @@ class CentralWidget(QWidget):
         sum += self.__price_ingredients
 
         self.__label_price_sum.setText("Gesamtpreis: \t"+ f"{sum:0.2f}" +" €")
+
+    @pyqtSlot(str)
+    def __slot_tip(self, text):
+        if text == "ohne":
+            self.__line_edit_tip.clear()
+            self.__line_edit_tip.setDisabled(True)
+        else:
+            self.__line_edit_tip.setDisabled(False)
+
+            if text == "Betrag":
+                self.__line_edit_tip.setInputMask("0.00;_")
+            elif text == "Prozent":
+                self.__line_edit_tip.setInputMask("00;_")
